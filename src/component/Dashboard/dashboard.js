@@ -219,6 +219,15 @@ class Dashboard extends React.Component {
                             />
                   }
                 }  />
+                <Route exact path="/history" render={
+                  ({match, location, history}) => { 
+                    console.log(teamName)
+                    return <History
+                                handleAppBarTitleChange={this.handleAppBarTitleChange}
+                                teamName={teamName}
+                            />
+                  }
+                }  />
                 <Route exact path="/confirmations" render={
                   ({match, location, confirmations}) => { 
                     console.log(teamName)

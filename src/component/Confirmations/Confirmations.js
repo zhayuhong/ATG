@@ -8,7 +8,7 @@ class History extends Component {
 	}
 
 	componentDidMount() {
-		this.props.handleAppBarTitleChange("History")
+		this.props.handleAppBarTitleChange("Confirmations")
 	}
 
 	render() {
