@@ -18,6 +18,7 @@ import { mainListItems, secondaryListItems } from '../Listitems/listItems';
 import {Route, HashRouter} from "react-router-dom"; 
 import TicketForm from '../TicketForm/TicketForm'
 import History from '../History/History'
+import Confirmations from '../Confirmations/Confirmations'
 import Clock from 'react-live-clock'
 
 const drawerWidth = 240;
@@ -180,7 +181,7 @@ class Dashboard extends React.Component {
               >
                 { appBarTitle }
               </Typography>
-              <Clock format={'MMM. D, Y HH:mm'} ticking={true} />
+              <Clock format={'MMM. D, HH:mm'} ticking={true} />
               {/*<IconButton color="inherit">
                 <Badge badgeContent={4} color="secondary">
                   <NotificationsIcon />
@@ -221,7 +222,16 @@ class Dashboard extends React.Component {
                 <Route exact path="/history" render={
                   ({match, location, history}) => { 
                     console.log(teamName)
-                    return <History  
+                    return <History
+                                handleAppBarTitleChange={this.handleAppBarTitleChange}
+                                teamName={teamName}
+                            />
+                  }
+                }  />
+                <Route exact path="/confirmations" render={
+                  ({match, location, confirmations}) => { 
+                    console.log(teamName)
+                    return <Confirmations
                                 handleAppBarTitleChange={this.handleAppBarTitleChange}
                                 teamName={teamName}
                             />
