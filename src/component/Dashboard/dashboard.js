@@ -180,7 +180,7 @@ class Dashboard extends React.Component {
               >
                 { appBarTitle }
               </Typography>
-              <Clock format={'MMM. D, Y HH:mm'} ticking={true} />
+              <Clock format={'MMM. D, HH:mm'} ticking={true} />
               {/*<IconButton color="inherit">
                 <Badge badgeContent={4} color="secondary">
                   <NotificationsIcon />
