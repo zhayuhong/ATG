@@ -18,6 +18,7 @@ import { mainListItems, secondaryListItems } from '../Listitems/listItems';
 import {Route, HashRouter} from "react-router-dom"; 
 import TicketForm from '../TicketForm/TicketForm'
 import History from '../History/History'
+import Confirmations from '../Confirmations/Confirmations'
 import Clock from 'react-live-clock'
 
 const drawerWidth = 240;
@@ -218,10 +219,10 @@ class Dashboard extends React.Component {
                             />
                   }
                 }  />
-                <Route exact path="/history" render={
-                  ({match, location, history}) => { 
+                <Route exact path="/confirmations" render={
+                  ({match, location, confirmations}) => { 
                     console.log(teamName)
-                    return <History  
+                    return <Confirmations
                                 handleAppBarTitleChange={this.handleAppBarTitleChange}
                                 teamName={teamName}
                             />

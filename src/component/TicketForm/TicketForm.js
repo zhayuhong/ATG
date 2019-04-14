@@ -42,7 +42,7 @@ class TicketForm extends Component {
 				}
 				{
 					redirectToComfirmation && 
-					<Redirect to="/history" />
+					<Redirect to="/confirmations" />
 				}
 				<form onSubmit={this.handleSubmit}>
 				  <div className="form-group">
