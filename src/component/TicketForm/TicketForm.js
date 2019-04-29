@@ -46,7 +46,7 @@ class TicketForm extends Component {
 				}
 				<form onSubmit={this.handleSubmit}>
 				  <div className="form-group">
-				    <label>Team Name</label>
+				    <label>Team Assigned To</label>
 				    <input type="text" className="form-control" placeholder="Enter Team Name" onChange={this.props.handleTeamChange}/>
 				  </div>
 				  <div className="form-group">
