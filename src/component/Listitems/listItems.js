@@ -35,14 +35,19 @@ export const mainListItems = (
   </div>
 );
 
+// export const secondaryListItems = (
+//   <div>
+//     <ListSubheader inset>Saved reports</ListSubheader>
+//     <ListItem button>
+//       <ListItemIcon>
+//         <AssignmentIcon />
+//       </ListItemIcon>
+//       <ListItemText primary="Current month" />
+//     </ListItem>
+//   </div>
+// );
+
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItem>
   </div>
 );

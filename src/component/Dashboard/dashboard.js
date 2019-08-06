@@ -20,6 +20,7 @@ import TicketForm from '../TicketForm/TicketForm'
 import History from '../History/History'
 import Confirmations from '../Confirmations/Confirmations'
 import Clock from 'react-live-clock'
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -107,7 +108,8 @@ class Dashboard extends React.Component {
     ticketID: "", 
     file: null, 
     redirectToComfirmation: false, 
-    appBarTitle: 'Dashboard'
+    appBarTitle: 'Dashboard',
+    history: ""
   };
 
   handleDrawerOpen = () => {
@@ -145,6 +147,17 @@ class Dashboard extends React.Component {
       file: e.target.files[0]
     }, () => {
       console.log(this.state.file)
+    })
+  }
+
+  handleHistory = () => {
+    const data = new FormData()
+    axios.post("http://localhost:7777/api/search", data, { 
+    })
+    .then(res => {
+     this.setState({
+       history: res.data.result
+     })
     })
   }
 
@@ -224,7 +237,9 @@ class Dashboard extends React.Component {
                     console.log(teamName)
                     return <History
                                 handleAppBarTitleChange={this.handleAppBarTitleChange}
+                                handleHistory={this.handleHistory}
                                 teamName={teamName}
+                                state={this.state}
                             />
                   }
                 }  />
