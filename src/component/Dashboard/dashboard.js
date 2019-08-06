@@ -150,7 +150,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const {teamName, appBarTitle} = this.state
+    const {teamName, ticketID, appBarTitle} = this.state
 
     return (
       <HashRouter>
@@ -234,6 +234,7 @@ class Dashboard extends React.Component {
                     return <Confirmations
                                 handleAppBarTitleChange={this.handleAppBarTitleChange}
                                 teamName={teamName}
+                                ticketID={ticketID}
                             />
                   }
                 }  />
