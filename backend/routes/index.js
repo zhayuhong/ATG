@@ -1,10 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const router = express();
+const router = express.Router()
 const request = require('request')
 var multer = require('multer')
-var cors = require('cors');
-router.use(cors())
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: false }))
@@ -12,13 +10,12 @@ var mysql = require('mysql')
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
+  password: 'mysqlpwd_1A',
   database: 'ticket_record'
 })
-connection.connect()
 
 router.post('/search', (req, res, next) => {
-  // connection.connect()
+  connection.connect()
   connection.query('SELECT * from records', function (err, rows, fields) {
     if (err) throw err
 
@@ -27,11 +24,11 @@ router.post('/search', (req, res, next) => {
     console.log(data);
     res.status(200).json({ "result": data })
   })
-  // connection.end()
+  connection.end()
 })
 
 router.post('/high', (req, res, next) => {
-  // connection.connect()
+  connection.connect()
   connection.query("SELECT * from records where severity = 'high'", function (err, rows, fields) {
     if (err) throw err
 
@@ -40,11 +37,11 @@ router.post('/high', (req, res, next) => {
     console.log(data);
     res.status(200).json({ "result": data })
   })
-  // connection.end()
+  connection.end()
 })
 
 router.post('/minimal', (req, res, next) => {
-  // connection.connect()
+  connection.connect()
   connection.query("SELECT * from records where severity = 'minimal'", function (err, rows, fields) {
     if (err) throw err
 
@@ -53,11 +50,11 @@ router.post('/minimal', (req, res, next) => {
     console.log(data);
     res.status(200).json({ "result": data })
   })
-  // connection.end()
+  connection.end()
 })
 
 router.post('/low', (req, res, next) => {
-  // connection.connect()
+  connection.connect()
   connection.query("SELECT * from records where severity = 'low'", function (err, rows, fields) {
     if (err) throw err
 
@@ -66,7 +63,7 @@ router.post('/low', (req, res, next) => {
     console.log(data);
     res.status(200).json({ "result": data })
   })
-  // connection.end()
+  connection.end()
 })
 
 var storage = multer.diskStorage({
@@ -94,8 +91,8 @@ router.post('/save', function (req, res) {
 router.post('/upload', (req, res, next) => {
   console.log('reading CSV data from csv:')
   var file_name = req.query.file_name
-  // var ticket_name = req.query.ticket_name
-  var application_name = req.query.application_name
+  var ticket_name = req.query.ticket_name
+  // var application_name = req.query.application_name
   var team_name = req.query.team_name
 
   var today = new Date();
@@ -115,79 +112,41 @@ router.post('/upload', (req, res, next) => {
   var csvData = csvParse(fileContents)
   // for each row of data
   var line_num = 0
-  // connection.connect()
+  connection.connect()
   var sql = "INSERT INTO records(issue_type, vulnerability_id, vulnerability_url, summary, description, severity, impact, recommendation, team_name, ticket_name, file_name, submission_date) VALUES "
   var last_summary = ""
-  var last_tic_summary = ""
-  var last_sev_summary = ""
   var vnl_url = ""
-  var tar = "("
-  var vln_num = 1;
-  var all_summary = ""
-  var all_tic_summary = ""
-  var all_sev_summary = ""
   for (var row of csvData) {
-
     line_num++;
     if (line_num == 1) {
       continue
     }
-    console.log(line_num)
-    var now_summary = row[3].replace(/'/g, "")
-    if ((now_summary != last_summary && line_num != 2)) {
-
-      // console.log(tar)
-      console.log("  " + sql + tar);
-      
-      all_summary += last_summary + "|||"
-      all_tic_summary += ticket_str = "vln-" + application_name + "-" + vln_num + "|||"
-      all_sev_summary += last_sev_summary + "|||"
-      vln_num++;
-      // vln_num++;
-      // connection.query(sql + tar, function (err, result) {
-      //   if (err) {
-      //     console.log('[INSERT ERROR] - ', err.message);
-      //     return;
-      //   }
-      //   console.log('--------------------------INSERT----------------------------');
-      // });
-      tar = "("
-      vnl_url = ""
-    }
-    vnl_url += row[2].replace(/'/g, "") + "      "
-    last_summary = now_summary;
-    last_sev_summary = row[5].replace(/'/g, "")
-    tar = "("
+    var tar = "("
+    var this_summary = row[3].replace(/'/g, "")
     for (col in row) {
-      if (col == 2) {
-        tar += "'" + vnl_url + "',"
-      } else {
-        tar += "'" + row[col].replace(/'/g, "") + "',"
-      }
+      console.log(col)
+      tar += "'" + row[col].replace(/'/g, "") + "',"
     }
-    var ticket_str = "vln-" + application_name + "-" + vln_num
     tar += "'" + team_name.replace(/'/g, "") + "',"
-    tar += "'" + ticket_str.replace(/'/g, "") + "',"
+    tar += "'" + ticket_name.replace(/'/g, "") + "',"
     tar += "'" + file_name.replace(/'/g, "") + "',"
     tar += "'" + submission_date.replace(/'/g, "") + "',"
     tar = tar.slice(0, -1) + ")"
-    if (line_num == csvData.length) {
-      all_summary += last_summary
-      all_tic_summary += ticket_str = "vln-" + application_name + "-" + vln_num
-      all_sev_summary += last_sev_summary
-      vln_num++;
-      console.log("here" + sql + tar);
-      // connection.query(sql + tar, function (err, result) {
-      //   if (err) {
-      //     console.log('[INSERT ERROR] - ', err.message);
-      //     return;
-      //   }
-      //   console.log('--------------------------INSERT----------------------------');
-      // });
-    }
+    // console.log(tar)
+    connection.query(sql + tar, function (err, result) {
+      if (err) {
+        console.log('[INSERT ERROR] - ', err.message);
+        return;
+      }
+
+      console.log('--------------------------INSERT----------------------------');
+      //console.log('INSERT ID:',result.insertId);        
+      console.log('INSERT ID:', result);
+      console.log('-----------------------------------------------------------------\n\n');
+    });
   }
 
-  // connection.end()
-  res.status(200).json({ "file_name": file_name, "tickets_summary": all_summary, "ticket_name_summary": all_tic_summary, "severity_summary": all_sev_summary })
+  connection.end()
+  res.status(200).json({ "file_name": file_name })
 })
 module.exports = router
